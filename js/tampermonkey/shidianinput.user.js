@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name         识典古籍辅助输入
 // @namespace    http://tampermonkey.net/
-// @version      2025-12-07
+// @version      2026-02-06
 // @description  辅助输入
 // @author       Leon406
 // @match        https://edit.shidianguji.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=shidianguji.com
 // @grant        none
 // @license      AGPL-3.0-or-later
+// @downloadURL https://update.greasyfork.org/scripts/558374/%E8%AF%86%E5%85%B8%E5%8F%A4%E7%B1%8D%E8%BE%85%E5%8A%A9%E8%BE%93%E5%85%A5.user.js
+// @updateURL https://update.greasyfork.org/scripts/558374/%E8%AF%86%E5%85%B8%E5%8F%A4%E7%B1%8D%E8%BE%85%E5%8A%A9%E8%BE%93%E5%85%A5.meta.js
 // ==/UserScript==
 
 (function () {
@@ -56,12 +58,14 @@
                 const inputEvent = new Event('input', { bubbles: true });
                 input.dispatchEvent(inputEvent);
 
-                try {
-                    await navigator.clipboard.writeText(optionText);
-                    console.log('Copied to clipboard:', optionText)
-                } catch (err) {
-                    console.error('Failed to copy:', err)
-                }
+                const event = new KeyboardEvent('keydown', {
+                     keyCode: 13,
+                     bubbles: true,
+                     cancelable: true
+                 });
+                setTimeout(function(){
+                 input.dispatchEvent(event);
+                },10)
             };
             item.oncontextmenu = e => {
                 e.preventDefault();
